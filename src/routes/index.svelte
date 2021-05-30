@@ -1,22 +1,31 @@
 <script lang="ts">
-	import type { Item } from '$lib/types/index'
+	import { get } from 'svelte/store';
+	import { makeAll, makeOrder, renderPrice, getTotal } from '$lib/store/order';
+	import Button from '$lib/components/Button.svelte';
+	import OrderListItem from "$lib/components/OrderListItem.svelte"
 
-	const menuItems: Array<Item> = [
-		{ id: 0, name: "Spicy Beef", price: 399 },
-		{ id: 1, name: "Chicken", price: 280 },
-		{ id: 2, name: "Bruh", price: 280 },
-		{ id: 3, name: "Dis Dick", price: 280 },
-		{ id: 4, name: "Yo Mama", price: 280 },
-		{ id: 5, name: "Bolognea", price: 280 },
-		{ id: 6, name: "Spaghet", price: 280 },
-		{ id: 7, name: "Seared Penis", price: 280 },
-		{ id: 8, name: "Spring Roll", price: 280 },
-	]
+	let items = [];
+	if (typeof window !== 'undefined') {
+		items = makeAll();
+	}
+	console.log({ items })
+	function newOrder() {
+		const order = makeOrder();
+		const val = get(order);
+		goto(val.id)
+	}
+
 </script>
-<div class="grid grid-cols-3 gap-4">
-	{#each menuItems as item}
-		<div class="bg-white shadow-lg rounded-lg flex flex-col items-center py-4"> 
-			<div class="text-lg">{item.name}</div>
-		</div>
-	{/each}
+
+<div class="divide-y divide-dashed">
+{#each items as item}
+	<OrderListItem {item} />
+{/each}
+</div>
+<div class="absolute top-6 right-6">
+	<Button on:click={newOrder} >
+		<svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+		</svg>
+	</Button>
 </div>

@@ -1,7 +1,7 @@
 const { tailwindExtractor } = require("tailwindcss/lib/lib/purgeUnusedStyles");
 
 module.exports = {
-	mode: "aot",
+	mode: "jit",
 	purge: {
 		content: [
 			"./src/**/*.{html,js,svelte,ts}",
@@ -17,7 +17,8 @@ module.exports = {
 		safelist: [/^svelte-[\d\w]+$/],
 	},
 	theme: {
-		extend: {},
+		extend: {
+		},
 	},
 	variants: {
 		extend: {},
