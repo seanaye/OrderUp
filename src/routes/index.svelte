@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
-	import { makeAll, makeOrder, renderPrice, getTotal } from '$lib/store/order';
+	import { makeAll, makeOrder } from '$lib/store/order';
 	import Button from '$lib/components/Button.svelte';
 	import OrderListItem from "$lib/components/OrderListItem.svelte"
+	import { goto } from "$app/navigation"
 
 	let items = [];
 	if (typeof window !== 'undefined') {
 		items = makeAll();
 	}
-	console.log({ items })
+
 	function newOrder() {
 		const order = makeOrder();
 		const val = get(order);

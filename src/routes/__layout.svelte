@@ -10,8 +10,6 @@
 <script lang="ts">
 	import '../app.postcss';
 	import { makeOrder } from '$lib/store/order';
-	import type { Writable } from 'svelte/store';
-	import type { Order } from '$lib/types/index';
 	import { setContext } from 'svelte';
 	import OrderLayout from '$lib/components/OrderLayout.svelte';
 	import { goto } from '$app/navigation';

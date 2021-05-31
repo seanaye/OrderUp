@@ -1,10 +1,11 @@
 <script lang="ts">
-  import type { Writable } from "svelte/store"
-  import type { Order } from "$lib/types/index"
+  import { makeOrder } from "$lib/store/order"
   import { getContext } from 'svelte'
   import { getTotal, renderPrice } from '$lib/store/order'
+  import Plus from "$lib/components/icons/Plus.svelte"
+  import Minus from "$lib/components/icons/Minus.svelte"
   export let path: string
-  const order = getContext<Writable<Order>>(path)
+  const order = getContext<ReturnType<makeOrder>>(path)
 
   let total = 0
   let subtotal = 0
@@ -23,7 +24,15 @@
         <div>
           {item.count} x {item.name}
         </div>
-        <div>{renderPrice(item.price)}<div>
+        <div>
+          {renderPrice(item.price)}
+          <div on:click={() => order.add(item, 1)} class="mx-2">
+            <Plus />
+          </div>
+          <div on:click={() => order.add(item, -1)} class="mx-2">
+            <Minus />
+          </div>
+        <div>
       </li>
     {/each}
     <div class="py-4 w-full flex flex-row justify-between mt-auto">

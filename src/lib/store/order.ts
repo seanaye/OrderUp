@@ -1,6 +1,5 @@
 import { produce } from 'immer';
 import type { Order, Item } from '$lib/types/index';
-import { get } from 'svelte/store';
 import { v4 } from 'uuid';
 import { writable } from 'svelte/store';
 
@@ -24,7 +23,8 @@ export const makeOrder = (oldId?: string) => {
 	const { set, subscribe, update } = writable<Order>({
 		id,
 		name: '',
-		items: []
+		items: [],
+		complete: false
 	});
 
 	console.log({ oldId });
@@ -56,7 +56,12 @@ export const makeOrder = (oldId?: string) => {
 				const thisItem = current.items.findIndex((elem) => elem.id === item.id);
 				if (thisItem !== -1) {
 					return produce(current, (draft) => {
-						draft.items[thisItem].count += count;
+						const newCount = draft.items[thisItem].count + count
+						if (newCount < 1) {
+							draft.items.splice(thisItem, 1)
+						} else {
+							draft.items[thisItem].count += count;
+						}
 					});
 				}
 				return produce(current, (draft) => {
@@ -66,7 +71,7 @@ export const makeOrder = (oldId?: string) => {
 				});
 			});
 		},
-		set
+		set,
 	};
 };
 

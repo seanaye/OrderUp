@@ -8,9 +8,10 @@
 <script lang="ts">
 	import { getContext } from 'svelte'
 	import type { Item, Order } from '$lib/types/index'
+	import { makeOrder } from "$lib/store/order"
 	export let path: string
 
-	const order = getContext<WritableStore<Order>>(path)
+	const order = getContext<ReturnType<makeOrder>>(path)
 
 	function addItem(item: Item) {
 		console.log({ order, item })
@@ -33,7 +34,7 @@
 </script>
 <div class="grid grid-cols-3 gap-4">
 	{#each menuItems as item}
-		<div on:click={() => addItem(item)} class="bg-white shadow-lg rounded-lg flex flex-col items-center py-12"> 
+		<div on:click={() => addItem(item)} class=" cursor-pointer bg-white shadow-lg rounded-lg flex flex-col items-center py-12"> 
 			<div class="text-2xl select-none">{item.name}</div>
 		</div>
 	{/each}
